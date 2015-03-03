@@ -1,0 +1,73 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Feb 17, 2015, 1:47:12 PM
+    Author     : Mitch
+*/
+
+body{
+    background:gray;
+}
+.form-control{
+    background-color: #d9edf7;
+}
+.header-fixed {
+    width: 100% 
+}
+
+.header-fixed > thead,
+.header-fixed > tbody,
+.header-fixed > thead > tr,
+.header-fixed > tbody > tr,
+.header-fixed > thead > tr > th,
+.header-fixed > tbody > tr > td {
+    display: block;
+}
+
+.header-fixed > tbody > tr:after,
+.header-fixed > thead > tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+.header-fixed > tbody {
+    overflow-y: auto;
+    height: 150px;
+}
+
+.idWidth {
+    width: 25%;
+    float: left;
+    overflow: hidden;
+}
+
+.nameWidth {
+    width: 40%;
+    float: left;
+    overflow: hidden;
+}
+
+.cityWidth {
+    width: 35%;
+    float: left;
+    overflow: hidden;
+}
+
+.header-fixed > thead > tr > th {
+    border: none;
+    margin-left: -1%;
+    text-decoration: underline;
+    text-align: center;
+}
+
+#newEntry{
+}
+
+.clickable{
+    cursor: pointer;
+}
