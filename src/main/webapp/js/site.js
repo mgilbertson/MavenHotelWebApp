@@ -16,3 +16,10 @@ function newEntry() {
     $('#newFormDiv').show();
     $('#title').show().html('Add new record <hr>');
 }
+
+$(".dropdown-menu li a").click(function(){
+
+      $("#selectedState").html($(this).text() + ' <span class="caret"></span>');
+      $("#filterState").val($(this).text());
+
+   });

@@ -71,3 +71,15 @@ body{
 .clickable{
     cursor: pointer;
 }
+
+#dropdownMenu1 {
+    height: 2em;
+    margin-bottom: -1em;
+}
+#selectedState {
+    margin-top: -.25em;
+}
+
+.filterInput {
+    margin-top: .5em;
+}
