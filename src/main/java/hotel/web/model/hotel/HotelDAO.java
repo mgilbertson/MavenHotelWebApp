@@ -71,10 +71,10 @@ public class HotelDAO {
 
     public List<Hotel> getAllHotels() throws Exception {
         openLocalDbConnection();
-        List<Map> rawData = new ArrayList<Map>();
-        List<Hotel> records = new ArrayList<Hotel>();
+        List<Map> rawData;
+        List<Hotel> records = new ArrayList<>();
         rawData = db.findAllRecordsInTable("hotel");
-        Hotel hotel = null;
+        Hotel hotel;
         for (Map m : rawData) {
             hotel = new Hotel();
             String id = m.get("hotel_id").toString();

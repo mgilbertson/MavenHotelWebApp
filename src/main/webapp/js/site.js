@@ -3,11 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-window.onload = function () {
+$( document ).ready(function() {
     $('#editFormDiv').attr("style", "display: ${tableVisible}");
     $('#title').attr("style", "display: ${tableVisible}");
     $('#newFormDiv').hide();
-};
+});
 function clicked(id) {
     $('#' + id).submit();
 }

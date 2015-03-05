@@ -42,6 +42,10 @@ public class HotelController extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         HotelService hs = new HotelService();
 
+        List<Hotel> allHotels = hs.getAllHotels();
+        request.setAttribute("filteredHotels", hs.getAllHotels());
+        List<Hotel> filteredHotels = new ArrayList<>();
+
         if (request.getParameter("hotelId") != null) {
             Hotel hotel = hs.getHotelById(request.getParameter("hotelId"));
             request.setAttribute("hotelId", hotel.getHotelId());
@@ -55,7 +59,7 @@ public class HotelController extends HttpServlet {
         } else {
             request.setAttribute("tableVisible", "none");
         }
-        if (request.getParameter("submit") != null  && request.getParameter("hotelId") != null) {
+        if (request.getParameter("submit") != null && request.getParameter("hotelId") != null) {
             if (request.getParameter("submit").equals("Save")) {
                 Hotel hotel = hs.getHotelById(request.getParameter("hotelId"));
                 hotel.setHotelName(request.getParameter("name"));
@@ -65,31 +69,74 @@ public class HotelController extends HttpServlet {
                 hotel.setPostalCode(request.getParameter("postalCode"));
                 hotel.setNotes(request.getParameter("notes"));
                 hs.saveHotel(hotel);
-            }
-            else if(request.getParameter("submit").equals("Delete")){
-                hs.deleteHotel(hs.getHotelById(request.getParameter("hotelId"))); 
+            } else if (request.getParameter("submit").equals("Delete")) {
+                hs.deleteHotel(hs.getHotelById(request.getParameter("hotelId")));
             }
             request.setAttribute("tableVisible", "none");
         }
-        if(request.getParameter("submit") != null && request.getParameter("submit").equals("Add Hotel")){
-                Hotel hotel = new Hotel();
-                hotel.setHotelName(request.getParameter("name"));
-                hotel.setStreetAddress(request.getParameter("address"));
-                hotel.setCity(request.getParameter("city"));
-                hotel.setState(request.getParameter("state"));
-                hotel.setPostalCode(request.getParameter("postalCode"));
-                hotel.setNotes(request.getParameter("notes"));
-                hs.saveHotel(hotel);
-            }
-        
-        List<Hotel> allHotels = hs.getAllHotels();
-        request.setAttribute("allHotels", allHotels);
-        
+        if (request.getParameter("submit") != null && request.getParameter("submit").equals("Add Hotel")) {
+            Hotel hotel = new Hotel();
+            hotel.setHotelName(request.getParameter("name"));
+            hotel.setStreetAddress(request.getParameter("address"));
+            hotel.setCity(request.getParameter("city"));
+            hotel.setState(request.getParameter("state"));
+            hotel.setPostalCode(request.getParameter("postalCode"));
+            hotel.setNotes(request.getParameter("notes"));
+            hs.saveHotel(hotel);
+            request.setAttribute("tableVisible", "none");
+        }
+        if (request.getParameter("submit") != null && request.getParameter("submit").equals("Filter")) {
+            
+            allHotels = hs.getAllHotels();
+            if (request.getParameter("filterState") != null && !(request.getParameter("filterState").isEmpty())) {
+                if (request.getParameter("filterCity") != null && !(request.getParameter("filterCity").isEmpty())) {
+                    for (Hotel hotel : allHotels) {
+                        if (hotel.getCity().toLowerCase().equals(request.getParameter("filterCity").toLowerCase())
+                                && hotel.getState().toLowerCase().equals(request.getParameter("filterState").toLowerCase())) {
+                            filteredHotels.add(hotel);
+                        }
+                    }
+                    request.setAttribute("filteredHotels", filteredHotels);
+                } else {
+                    for (Hotel hotel : allHotels) {
+                        if (hotel.getState().toLowerCase().equals(request.getParameter("filterState").toLowerCase())) {
+                            filteredHotels.add(hotel);
+                        }
+                    }
+                    request.setAttribute("filteredHotels", filteredHotels);
+                }
+            } else if(request.getParameter("filterPost") != null && !(request.getParameter("filterPost").isEmpty())){
+                for (Hotel hotel : allHotels) {
+                        if (hotel.getPostalCode().toLowerCase().equals(request.getParameter("filterPost").toLowerCase())) {
+                            filteredHotels.add(hotel);
+                        }
+                    }
+                request.setAttribute("filteredHotels", filteredHotels);
+            } else if(request.getParameter("filterName") != null && !(request.getParameter("filterName").isEmpty())){
+                for (Hotel hotel : allHotels) {
+                        if (hotel.getHotelName().toLowerCase().equals(request.getParameter("filterName").toLowerCase())) {
+                            filteredHotels.add(hotel);
+                        }
+                    }
+                request.setAttribute("filteredHotels", filteredHotels);
+            } else if(request.getParameter("filterCity") != null && !(request.getParameter("filterCity").isEmpty())){
+                for (Hotel hotel : allHotels) {
+                        if (hotel.getCity().toLowerCase().equals(request.getParameter("filterCity").toLowerCase())) {
+                            filteredHotels.add(hotel);
+                        }
+                    }
+                request.setAttribute("filteredHotels", filteredHotels);
+            } else {
+            request.setAttribute("filteredHotels", hs.getAllHotels());
+        }
+
+            
+            request.setAttribute("tableVisible", "none");
+            
+        }
         List<String> states = getAllStates(allHotels);
         request.setAttribute("states", states);
-        
-        List filteredHotels = allHotels;
-        request.setAttribute("filteredHotels", filteredHotels);
+
         RequestDispatcher view
                 = request.getRequestDispatcher(RESULT_PAGE);
         view.forward(request, response);
@@ -106,7 +153,6 @@ public class HotelController extends HttpServlet {
         return states;
     }
 
-    
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
